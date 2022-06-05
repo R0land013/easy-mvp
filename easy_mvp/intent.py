@@ -8,7 +8,7 @@ class Intent:
         self.__presenter_class = presenter_class
 
     def get_presenter_class(self) -> type:
-        return self.get_presenter_class()
+        return self.__presenter_class
 
     def get_data(self) -> dict:
         return self.__presenter_data
