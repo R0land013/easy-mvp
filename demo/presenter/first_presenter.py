@@ -10,16 +10,20 @@ class FirstPresenter(AbstractPresenter):
         view = FirstView(self)
         self._set_view(view)
         self.__message = 'Hello, {}!'
-        view.set_message(self.__message.format('Unknown'))
+        self.__name = 'Unknown'
+        view.set_message(self.__message.format(self.__name))
 
     def open_second_screen(self):
         intent = Intent(SecondPresenter)
         data = {}
-        data[SecondPresenter.GREETING_NAME] = self.get_view().get_name()
+        data[SecondPresenter.GREETING_NAME] = self.__name
         intent.set_data(data)
         self._open_other_presenter(intent)
 
     def change_greeting_name(self):
         view = self.get_view()
-        name = view.get_name()
+        self.__name = view.get_name()
         view.set_message(self.__message.format(name))
+
+    def close(self):
+        self._close_this_presenter()

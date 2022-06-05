@@ -9,6 +9,7 @@ class FirstView(QFrame):
         loadUi('./demo/view/ui/first.ui', self)
         self.go_to_second_button.clicked.connect(presenter.open_second_screen)
         self.change_name_button.clicked.connect(presenter.change_greeting_name)
+        self.exit_button.clicked.connect(presenter.close)
 
     def set_message(self, text: str):
         self.name_label.setText(text)

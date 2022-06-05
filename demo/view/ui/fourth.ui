@@ -13,24 +13,14 @@
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="message_label">
      <property name="text">
-      <string>Second Screen</string>
+      <string>Fourth Screen</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="open_window_button">
-     <property name="text">
-      <string>Open new window</string>
      </property>
     </widget>
    </item>
