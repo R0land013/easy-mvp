@@ -20,8 +20,8 @@ class ApplicationManager:
         self.__window_stack.append(window)
         window.show()
 
-    def pop_presenter(self, calling_presenter: AbstractPresenter):
-        pass
+    def remove_window(self, window: Window):
+        self.__window_stack.remove(window)
 
     def execute_app(self):
         window = Window(self)

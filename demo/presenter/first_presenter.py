@@ -23,7 +23,7 @@ class FirstPresenter(AbstractPresenter):
     def change_greeting_name(self):
         view = self.get_view()
         self.__name = view.get_name()
-        view.set_message(self.__message.format(name))
+        view.set_message(self.__message.format(self.__name))
 
     def close(self):
         self._close_this_presenter()

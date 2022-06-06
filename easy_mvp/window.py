@@ -69,6 +69,7 @@ class Window:
             self.close()
 
     def close(self):
+        self.__app_manager.remove_window(self)
         self.__stacked_widget.close()
 
     def show(self):
