@@ -15,12 +15,32 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>If you change the name here, it will be changed all the way back.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="message_label">
      <property name="text">
       <string>Fourth Screen</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="name_line_edit"/>
+   </item>
+   <item>
+    <widget class="QPushButton" name="change_name_button">
+     <property name="text">
+      <string>Change name</string>
      </property>
     </widget>
    </item>

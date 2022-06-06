@@ -11,20 +11,25 @@ class SecondPresenter(AbstractPresenter):
     def _on_initialize(self):
         view = SecondView(self)
         self._set_view(view)
-        intent_data = self._get_intent_data()
-        name_from_first_presenter = intent_data[self.GREETING_NAME]
-        message = 'Hello again {}!'.format(name_from_first_presenter)
+
+        self.__name = self._get_intent_data()[self.GREETING_NAME]
+        message = 'Hello again {}!'.format(self.__name)
         view.set_message(message)
 
     def return_to_first_presenter(self):
-        self._close_this_presenter()
+        data = {self.GREETING_NAME: self.__name}
+        self._close_this_presenter_with_result(data)
 
     def open_new_window(self):
         intent = Intent(ThirdPresenter)
         intent.use_new_window(True)
         intent.use_modal(True)
 
-        name = self._get_intent_data()[self.GREETING_NAME]
-        data = {ThirdPresenter.GREETING_NAME: name}
+        data = {ThirdPresenter.GREETING_NAME: self.__name}
         intent.set_data(data)
         self._open_other_presenter(intent)
+
+    def on_view_discovered_with_result(self, action: str, data: dict):
+        self.__name = data[ThirdPresenter.GREETING_NAME]
+        message = 'Hello again {}!'.format(self.__name)
+        self.get_view().set_message(message)

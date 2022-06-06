@@ -14,9 +14,9 @@ class ApplicationManager:
     def set_initial_intent(self, intent: Intent):
         self.__initial_intent = intent
 
-    def add_new_window(self, intent: Intent, calling_presenter: AbstractPresenter = None):
-        window = Window(self)
-        window.add_presenter(intent)
+    def add_new_window(self, intent: Intent, parent_window: Window, calling_presenter: AbstractPresenter):
+        window = Window(self, parent_window)
+        window.add_presenter(intent, calling_presenter)
         self.__window_stack.append(window)
         window.show()
 

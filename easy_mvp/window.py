@@ -7,13 +7,17 @@ from easy_mvp.intent import Intent
 
 class Window:
 
-    def __init__(self, application_manager):
+    def __init__(self, application_manager, parent_window=None):
         self.__presenter_stack = []
-
+        self.__parent_window = parent_window
         self.__stacked_widget = QStackedWidget()
         self.__app_manager = application_manager
 
+    def get_base_widget(self) -> QStackedWidget:
+        return self.__stacked_widget
+
     def add_presenter(self, intent: Intent, calling_presenter: AbstractPresenter = None):
+
         if self.presenter_count() == 0:
             self.__set_modal(intent.is_using_modal())
 
@@ -21,7 +25,7 @@ class Window:
         self.__notify_presenter_on_view_covered(calling_presenter)
 
         self.__add_presenter_and_its_view(intent)
-        self.__notify_presenter_on_view_shown()
+        self.__notify_top_presenter_on_view_shown()
 
     def presenter_count(self) -> int:
         return len(self.__presenter_stack)
@@ -50,6 +54,9 @@ class Window:
         self.__stacked_widget.addWidget(new_presenter.get_view())
         self.__stacked_widget.setCurrentWidget(new_presenter.get_view())
 
+    def __notify_top_presenter_on_view_shown(self):
+        self.get_top_presenter().on_view_shown()
+
     def get_top_presenter(self) -> AbstractPresenter:
         return self.__presenter_stack[-1]
 
@@ -59,7 +66,7 @@ class Window:
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
 
-        self.__notify_presenter_on_view_shown()
+        self.__notify_presenter_on_view_discovered()
         self.__close_window_if_no_presenter_remains()
 
         return top_presenter
@@ -69,18 +76,34 @@ class Window:
         self.__stacked_widget.removeWidget(top_presenter.get_view())
         return top_presenter
 
-    def __notify_presenter_on_view_shown(self):
+    def __notify_presenter_on_view_discovered(self):
         if len(self.__presenter_stack) >= 1:
             below_presenter = self.get_top_presenter()
-            below_presenter.on_view_shown()
+            below_presenter.on_view_discovered()
 
-    def __close_window_if_no_presenter_remains(self):
+    def __close_window_if_no_presenter_remains(self) -> bool:
         if len(self.__presenter_stack) == 0:
             self.close()
+            return True
+        return False
 
     def close(self):
         self.__app_manager.remove_window(self)
         self.__stacked_widget.close()
+
+    def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict):
+        self.__check_is_top_presenter(calling_presenter)
+
+        top_presenter = self.__pop_presenter_and_its_view()
+        top_presenter.on_closing_presenter()
+
+        was_window_closed = self.__close_window_if_no_presenter_remains()
+        if was_window_closed and self.__parent_window:
+            parent_window_presenter = self.__parent_window.get_top_presenter()
+            parent_window_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+        else:
+            below_presenter = self.get_top_presenter()
+            below_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
 
     def show(self):
         self.__stacked_widget.show()

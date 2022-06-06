@@ -12,14 +12,24 @@ class ThirdPresenter(AbstractPresenter):
 
         view = ThirdView(self)
         self._set_view(view)
+        self.__name = self._get_intent_data()[self.GREETING_NAME]
 
     def on_view_shown(self):
-        name = self._get_intent_data()[self.GREETING_NAME]
-        message = 'Hello from new window, {}!'.format(name)
+        message = 'Hello from new window, {}!'.format(self.__name)
         self.get_view().set_message(message)
 
     def open_fourth_presenter(self):
-        self._open_other_presenter(Intent(FourthPresenter))
+        intent = Intent(FourthPresenter)
+        data = {FourthPresenter.GREETING_NAME: self.__name}
+        intent.set_data(data)
+        self._open_other_presenter(intent)
 
     def close(self):
-        self._close_this_presenter()
+        data = {self.GREETING_NAME: self.__name}
+        self._close_this_presenter_with_result(data)
+
+    def on_view_discovered_with_result(self, action: str, data: dict):
+        self.__name = data[FourthPresenter.GREETING_NAME]
+        message = 'Hello from new window, {}!'.format(self.__name)
+        self.get_view().set_message(message)
+
