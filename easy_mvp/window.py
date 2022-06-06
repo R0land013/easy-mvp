@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QStackedWidget
 from PyQt5.QtCore import Qt
 from easy_mvp.abstract_presenter import AbstractPresenter
+from easy_mvp.exception import BelowPresenterDoingCommandsException
 from easy_mvp.intent import Intent
 
 
@@ -16,6 +17,7 @@ class Window:
         if self.presenter_count() == 0:
             self.__set_modal(intent.is_using_modal())
 
+        self.__check_is_top_presenter(calling_presenter)
         self.__notify_presenter_on_view_covered(calling_presenter)
 
         self.__add_presenter_and_its_view(intent)
@@ -29,6 +31,12 @@ class Window:
             self.__stacked_widget.setWindowModality(Qt.WindowModality.ApplicationModal)
         else:
             self.__stacked_widget.setWindowModality(Qt.WindowModality.NonModal)
+
+    def __check_is_top_presenter(self, presenter: AbstractPresenter):
+        if self.presenter_count() >= 1:
+            top_presenter = self.get_top_presenter()
+            if top_presenter is not presenter:
+                raise BelowPresenterDoingCommandsException()
 
     @staticmethod
     def __notify_presenter_on_view_covered(self, calling_presenter: AbstractPresenter = None):
@@ -46,6 +54,8 @@ class Window:
         return self.__presenter_stack[-1]
 
     def pop_presenter(self, calling_presenter: AbstractPresenter) -> AbstractPresenter:
+        self.__check_is_top_presenter(calling_presenter)
+
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
 
