@@ -61,3 +61,6 @@ class AbstractPresenter:
 
     def _get_intent_action(self) -> str:
         return self.__intent.get_action()
+
+    def exit_app(self, code: int = 0):
+        self.__window.exit_app(code)

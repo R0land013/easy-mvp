@@ -31,3 +31,5 @@ class ApplicationManager:
         window.show()
         self.__app.exec()
 
+    def exit(self, code: int = 0):
+        self.__app.exit(code)
