@@ -64,3 +64,9 @@ class AbstractPresenter:
 
     def exit_app(self, code: int = 0):
         self.__window.exit_app(code)
+
+    def set_global_data(self, key: str, data):
+        self.__app_manager.set_global_data(key, data)
+
+    def get_global_data(self, key: str):
+        return self.__app_manager.get_global_data(key)

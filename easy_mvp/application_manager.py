@@ -10,6 +10,7 @@ class ApplicationManager:
         self.__initial_intent = None
         self.__window_stack = []
         self.__app = QApplication([])
+        self.__global_data = {}
 
     def set_initial_intent(self, intent: Intent):
         self.__initial_intent = intent
@@ -33,3 +34,9 @@ class ApplicationManager:
 
     def exit(self, code: int = 0):
         self.__app.exit(code)
+
+    def set_global_data(self, key: str, data):
+        self.__global_data[key] = data
+
+    def get_global_data(self, key: str):
+        return self.__global_data[key]
