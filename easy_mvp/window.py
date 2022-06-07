@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QStackedWidget
 from PyQt5.QtCore import Qt
 from easy_mvp.abstract_presenter import AbstractPresenter
-from easy_mvp.exception import BelowPresenterDoingCommandsException
+from easy_mvp.exception import BelowPresenterDoingCommandsException, NoBelowPresenterToBeNotifiedWithResultException
 from easy_mvp.intent import Intent
 
 
@@ -93,17 +93,31 @@ class Window:
 
     def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict):
         self.__check_is_top_presenter(calling_presenter)
+        self.__check_there_is_below_presenter_to_be_notified_with_result()
 
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
-        if was_window_closed and self.__parent_window:
-            parent_window_presenter = self.__parent_window.get_top_presenter()
-            parent_window_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+        if was_window_closed:
+            self.__notify_presenter_on_discovered_with_result_on_parent_window(intent, result_data)
         else:
-            below_presenter = self.get_top_presenter()
-            below_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+            self.__notify_below_presenter_on_discovered_with_result(intent, result_data)
+
+    def __check_there_is_below_presenter_to_be_notified_with_result(self):
+        if self.presenter_count() == 1 and not self.has_parent_window():
+            raise NoBelowPresenterToBeNotifiedWithResultException()
+
+    def has_parent_window(self) -> bool:
+        return self.__parent_window is not None
+
+    def __notify_presenter_on_discovered_with_result_on_parent_window(self, intent: Intent, result_data: dict):
+        parent_window_presenter = self.__parent_window.get_top_presenter()
+        parent_window_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+
+    def __notify_below_presenter_on_discovered_with_result(self, intent: Intent, result_data: dict):
+        below_presenter = self.get_top_presenter()
+        below_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
 
     def show(self):
         self.__stacked_widget.show()
