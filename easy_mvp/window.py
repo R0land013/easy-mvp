@@ -60,7 +60,7 @@ class Window:
     def get_top_presenter(self) -> AbstractPresenter:
         return self.__presenter_stack[-1]
 
-    def pop_presenter(self, calling_presenter: AbstractPresenter, exit_code: int = 0) -> AbstractPresenter:
+    def pop_presenter(self, calling_presenter: AbstractPresenter) -> AbstractPresenter:
         self.__check_is_top_presenter(calling_presenter)
 
         top_presenter = self.__pop_presenter_and_its_view()
@@ -74,8 +74,7 @@ class Window:
             below_presenter = self.get_top_presenter()
             below_presenter.on_view_discovered()
         else:
-            self.close()
-            self.__app_manager.exit(exit_code)
+            self.__app_manager.exit()
 
         return top_presenter
 
@@ -91,11 +90,11 @@ class Window:
 
     def __close_window_if_no_presenter_remains(self) -> bool:
         if len(self.__presenter_stack) == 0:
-            self.close()
+            self.close_window()
             return True
         return False
 
-    def close(self):
+    def close_window(self):
         self.__stacked_widget.close()
         self.__app_manager.remove_window(self)
 
