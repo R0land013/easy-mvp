@@ -5,5 +5,4 @@ from easy_mvp.intent import Intent
 
 manager = ApplicationManager()
 intent = Intent(FirstPresenter)
-manager.set_initial_intent(intent)
-manager.execute_app()
+manager.execute_app(intent)

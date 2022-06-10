@@ -8,13 +8,9 @@ from easy_mvp.window import Window
 class ApplicationManager:
 
     def __init__(self):
-        self.__initial_intent = None
         self.__window_stack = []
         self.__app = QApplication([])
         self.__global_data = {}
-
-    def set_initial_intent(self, intent: Intent):
-        self.__initial_intent = intent
 
     def add_new_window(self, intent: Intent, parent_window: Window, calling_presenter: AbstractPresenter):
         window = Window(self, parent_window)
@@ -25,9 +21,9 @@ class ApplicationManager:
     def remove_window(self, window: Window):
         self.__window_stack.remove(window)
 
-    def execute_app(self):
+    def execute_app(self, initial_intent: Intent):
         window = Window(self)
-        window.add_presenter(self.__initial_intent)
+        window.add_presenter(initial_intent)
 
         self.__window_stack.append(window)
         window.show()
