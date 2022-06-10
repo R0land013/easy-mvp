@@ -28,6 +28,6 @@ class FirstPresenter(AbstractPresenter):
     def close(self):
         self._close_this_presenter()
 
-    def on_view_discovered_with_result(self, action: str, data: dict):
-        self.__name = data[SecondPresenter.GREETING_NAME]
+    def on_view_discovered_with_result(self, action: str, result_data: dict):
+        self.__name = result_data[SecondPresenter.GREETING_NAME]
         self.get_view().set_message(self.__message.format(self.__name))

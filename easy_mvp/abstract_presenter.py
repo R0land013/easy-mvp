@@ -44,7 +44,7 @@ class AbstractPresenter:
     def on_view_discovered(self):
         pass
 
-    def on_view_discovered_with_result(self, action: str, data: dict):
+    def on_view_discovered_with_result(self, action: str, result_data: dict):
         pass
 
     def on_closing_presenter(self):

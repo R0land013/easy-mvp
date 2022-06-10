@@ -28,8 +28,8 @@ class ThirdPresenter(AbstractPresenter):
         data = {self.GREETING_NAME: self.__name}
         self._close_this_presenter_with_result(data)
 
-    def on_view_discovered_with_result(self, action: str, data: dict):
-        self.__name = data[FourthPresenter.GREETING_NAME]
+    def on_view_discovered_with_result(self, action: str, result_data: dict):
+        self.__name = result_data[FourthPresenter.GREETING_NAME]
         message = 'Hello from new window, {}!'.format(self.__name)
         self.get_view().set_message(message)
 
