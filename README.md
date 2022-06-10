@@ -24,7 +24,7 @@ The following explanations are reflected in ``demo.py`` program.
 
 ### The application model created by **easy-mvp** is like this:
 
-![App Manager and windows](./readme_img/app_manager_and_windows.png)
+![App Manager and windows](https://github.com/R0land013/easy-mvp/blob/master/readme_img/app_manager_and_windows.png?raw=true)
 
 The **ApplicationManager** class is the **entry point** of the program. This
 class is the one that knows the windows, creates them and destroys them. Each
@@ -36,7 +36,7 @@ regardless of whether the new presenter is started in a new window.
 
 ### The behavior of the windows is represented as follows:
 
-![Window with its internal stack presenter](./readme_img/window_with_its_internal_stack.png)
+![Window with its internal stack presenter](https://github.com/R0land013/easy-mvp/blob/b2c8ba51e5315679848925967611e1e5931871dd/readme_img/window_with_its_internal_stack.png?raw=true)
 
 As you can see the **window has a stack of presenters**, the
 which are attached to their views, therefore **all the
@@ -53,7 +53,7 @@ or closed.
 
 ### The flow of events in a class that inherits from AbstractPresenter is like this:
 
-![flow_of_calls_on_presenter](./readme_img/flow_of_calls_on_presenter.png)
+![flow_of_calls_on_presenter](https://github.com/R0land013/easy-mvp/blob/b2c8ba51e5315679848925967611e1e5931871dd/readme_img/flow_of_calls_on_presenter.png?raw=true)
 
 The **_on_initialize** method is the first method called in the **AbstractPresenter** class.
 Here the instance variables of the presenter must be initialized. Also you must
