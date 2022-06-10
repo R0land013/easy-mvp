@@ -2,9 +2,11 @@
 
 class Intent:
 
+    NO_ACTION = 'no_action'
+
     def __init__(self, presenter_class: type):
         self.__presenter_data = {}
-        self.__presenter_action = None
+        self.__presenter_action = self.NO_ACTION
         self.__presenter_class = presenter_class
         self.__use_new_window = False
         self.__use_modal = False

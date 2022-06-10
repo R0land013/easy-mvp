@@ -3,8 +3,6 @@ from easy_mvp.intent import Intent
 
 class AbstractPresenter:
 
-    NO_ACTION = 'no_action'
-
     def __init__(self, intent: Intent, window, app_manager):
         self.__intent = intent
         self.__window = window
@@ -19,16 +17,12 @@ class AbstractPresenter:
         self.__view = view
 
     def _open_other_presenter(self, intent: Intent):
-        self.__set_default_intent_action_if_none(intent)
         if intent.is_using_new_window():
             self.__app_manager.add_new_window(intent,
                                               parent_window=self.__window,
                                               calling_presenter=self)
         else:
             self.__window.add_presenter(intent, self)
-
-    def __set_default_intent_action_if_none(self, intent: Intent):
-        intent.set_action(self.NO_ACTION)
 
     def _close_this_presenter(self):
         self.__window.pop_presenter(self)
