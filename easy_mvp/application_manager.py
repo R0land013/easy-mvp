@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication
 from easy_mvp.abstract_presenter import AbstractPresenter
+from easy_mvp.exception import NoGlobalDataWithKeyException
 from easy_mvp.intent import Intent
 from easy_mvp.window import Window
 
@@ -39,4 +40,9 @@ class ApplicationManager:
         self.__global_data[key] = data
 
     def get_global_data(self, key: str):
+        if key not in self.__global_data:
+            raise NoGlobalDataWithKeyException(key)
         return self.__global_data[key]
+
+    def has_global_data(self, key: str) -> bool:
+        return key in self.__global_data

@@ -15,3 +15,9 @@ class NoBelowPresenterToBeNotifiedWithResultException(Exception):
         super().__init__('A presenter can not be closed with result if there is not a below\n' +
                          'presenter on the same window. If there is not below presenter then\n' +
                          'it is necessary to the presenter\'s window to have a parent window.')
+
+
+class NoGlobalDataWithKeyException(Exception):
+
+    def __init__(self, key: str):
+        super().__init__('No global data with key {}.'.format(key))

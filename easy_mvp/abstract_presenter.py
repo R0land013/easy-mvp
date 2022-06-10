@@ -70,3 +70,6 @@ class AbstractPresenter:
 
     def get_global_data(self, key: str):
         return self.__app_manager.get_global_data(key)
+
+    def has_global_data(self, key: str) -> bool:
+        return self.__app_manager.has_global_data(key)
