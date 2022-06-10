@@ -17,6 +17,15 @@ that there is a **stack of Activity**.
 In addition, **easy-mvp**offers the possibility of doing the above **in more than
 a window**, since desktop applications are very different to **Android apps**.
 
+## Installation
+
+To install this package you need to have **Python** installed in your system.
+Then you can run this command to install this package:
+
+````shell script
+pip install easy_mvp
+````
+
 
 ## Explaining the mechanism
 
