@@ -1,8 +1,8 @@
-# easy-mvp
+# easy_mvp
 
 ## Description
 
-**easy-mvp** is a package that makes it easy to build desktop applications
+**easy_mvp** is a package that makes it easy to build desktop applications
 using **MVP** pattern, **Python** and **PyQt5**. This is achieved by using
 a set of classes and practices similar to those used in the **Android framework**.
 
@@ -14,7 +14,7 @@ If the Back button is pressed, then the new **Activity** is removed
 and the old one reappears on the screen. This gives the impression
 that there is a **stack of Activity**.
 
-In addition, **easy-mvp**offers the possibility of doing the above **in more than
+In addition, **easy_mvp** offers the possibility of doing the above **in more than
 a window**, since desktop applications are very different to **Android apps**.
 
 ## Installation
@@ -31,7 +31,7 @@ pip install easy_mvp
 
 The following explanations are reflected in ``demo.py`` program.
 
-### The application model created by **easy-mvp** is like this:
+### The application model created by **easy_mvp** is like this:
 
 ![App Manager and windows](https://github.com/R0land013/easy-mvp/blob/master/readme_img/app_manager_and_windows.png?raw=true)
 
@@ -68,7 +68,7 @@ The **_on_initialize** method is the first method called in the **AbstractPresen
 Here the instance variables of the presenter must be initialized. Also you must
 create the instance of the view that corresponds to the presenter. Once created,
 the view instance must be set with the **_set_view(view)** method, from
-this way the view is made accessible to the rest of the classes in **easy-mvp environment**.
+this way the view is made accessible to the rest of the classes in **easy_mvp environment**.
 The view can be obtained with the **get_view** method of **AbstractPresenter**, if it was set
 by **_set_view(view)** first.
 
