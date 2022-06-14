@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QStackedWidget
 from PyQt5.QtCore import Qt
 from easy_mvp.abstract_presenter import AbstractPresenter
@@ -5,13 +6,30 @@ from easy_mvp.exception import BelowPresenterDoingCommandsException, NoBelowPres
 from easy_mvp.intent import Intent
 
 
+class StackWindow(QStackedWidget):
+
+    def __init__(self, window_handler):
+        super().__init__()
+        self.__window_handler = window_handler
+
+    def closeEvent(self, event: QCloseEvent):
+        self.__window_handler.close_all_child_windows()
+
+
 class Window:
 
     def __init__(self, application_manager, parent_window=None):
         self.__presenter_stack = []
-        self.__parent_window = parent_window
-        self.__stacked_widget = QStackedWidget()
+        self.__parent_window = None
+        self.__link_to_parent_window(parent_window)
+        self.__stacked_widget = StackWindow(self)
         self.__app_manager = application_manager
+        self.__child_windows = []
+
+    def __link_to_parent_window(self, parent_window):
+        if parent_window is not None:
+            parent_window.add_child_window(self)
+        self.__parent_window = parent_window
 
     def get_base_widget(self) -> QStackedWidget:
         return self.__stacked_widget
@@ -97,6 +115,8 @@ class Window:
     def close_window(self):
         self.__stacked_widget.close()
         self.__app_manager.remove_window(self)
+        if self.__parent_window is not None:
+            self.__parent_window.remove_child_window(self)
 
     def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict):
         self.__check_is_top_presenter(calling_presenter)
@@ -131,3 +151,14 @@ class Window:
 
     def exit_app(self, code: int = 0):
         self.__app_manager.exit(code)
+
+    def close_all_child_windows(self):
+        while len(self.__child_windows) > 0:
+            child_window = self.__child_windows[0]
+            child_window.close_window()
+
+    def add_child_window(self, child_window):
+        self.__child_windows.append(child_window)
+
+    def remove_child_window(self, child_window):
+        self.__child_windows.remove(child_window)
