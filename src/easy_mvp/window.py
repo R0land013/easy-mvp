@@ -16,7 +16,7 @@ class StackWindow(QStackedWidget):
         self.__window_handler.close_all_child_windows()
 
 
-class Window:
+class WindowHandler:
 
     def __init__(self, application_manager, parent_window=None):
         self.__presenter_stack = []

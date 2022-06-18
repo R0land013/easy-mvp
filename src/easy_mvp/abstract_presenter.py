@@ -5,7 +5,7 @@ class AbstractPresenter:
 
     def __init__(self, intent: Intent, window, app_manager):
         self.__intent = intent
-        self.__window = window
+        self.__window_handler = window
         self.__app_manager = app_manager
         self.__view = None
         self._on_initialize()
@@ -19,18 +19,18 @@ class AbstractPresenter:
     def _open_other_presenter(self, intent: Intent):
         if intent.is_using_new_window():
             self.__app_manager.add_new_window(intent,
-                                              parent_window=self.__window,
+                                              parent_window=self.__window_handler,
                                               calling_presenter=self)
         else:
-            self.__window.add_presenter(intent, self)
+            self.__window_handler.add_presenter(intent, self)
 
     def _close_this_presenter(self):
-        self.__window.pop_presenter(self)
+        self.__window_handler.pop_presenter(self)
 
     def _close_this_presenter_with_result(self, result_data: dict):
-        self.__window.pop_presenter_with_result(self.__intent,
-                                                calling_presenter=self,
-                                                result_data=result_data)
+        self.__window_handler.pop_presenter_with_result(self.__intent,
+                                                        calling_presenter=self,
+                                                        result_data=result_data)
 
     def _on_initialize(self):
         pass
@@ -57,7 +57,7 @@ class AbstractPresenter:
         return self.__intent.get_action()
 
     def exit_app(self, code: int = 0):
-        self.__window.exit_app(code)
+        self.__window_handler.exit_app(code)
 
     def set_global_data(self, key: str, data):
         self.__app_manager.set_global_data(key, data)

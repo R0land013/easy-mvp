@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QApplication
 from easy_mvp.abstract_presenter import AbstractPresenter
 from easy_mvp.exception import NoGlobalDataWithKeyException
 from easy_mvp.intent import Intent
-from easy_mvp.window import Window
+from easy_mvp.window import WindowHandler
 
 
 class ApplicationManager:
@@ -12,17 +12,17 @@ class ApplicationManager:
         self.__app = QApplication([])
         self.__global_data = {}
 
-    def add_new_window(self, intent: Intent, parent_window: Window, calling_presenter: AbstractPresenter):
-        window = Window(self, parent_window)
+    def add_new_window(self, intent: Intent, parent_window: WindowHandler, calling_presenter: AbstractPresenter):
+        window = WindowHandler(self, parent_window)
         window.add_presenter(intent, calling_presenter)
         self.__window_stack.append(window)
         window.show()
 
-    def remove_window(self, window: Window):
+    def remove_window(self, window: WindowHandler):
         self.__window_stack.remove(window)
 
     def execute_app(self, initial_intent: Intent):
-        window = Window(self)
+        window = WindowHandler(self)
         window.add_presenter(initial_intent)
 
         self.__window_stack.append(window)
