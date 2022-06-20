@@ -118,7 +118,7 @@ class WindowHandler:
         if self.__parent_window is not None:
             self.__parent_window.remove_child_window(self)
 
-    def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict):
+    def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict, result: str):
         self.__check_is_top_presenter(calling_presenter)
         self.__check_there_is_below_presenter_to_be_notified_with_result()
 
@@ -127,9 +127,9 @@ class WindowHandler:
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed:
-            self.__notify_presenter_on_discovered_with_result_on_parent_window(intent, result_data)
+            self.__notify_presenter_on_discovered_with_result_on_parent_window(intent, result_data, result)
         else:
-            self.__notify_below_presenter_on_discovered_with_result(intent, result_data)
+            self.__notify_below_presenter_on_discovered_with_result(intent, result_data, result)
 
     def __check_there_is_below_presenter_to_be_notified_with_result(self):
         if self.presenter_count() == 1 and not self.has_parent_window():
@@ -138,13 +138,13 @@ class WindowHandler:
     def has_parent_window(self) -> bool:
         return self.__parent_window is not None
 
-    def __notify_presenter_on_discovered_with_result_on_parent_window(self, intent: Intent, result_data: dict):
+    def __notify_presenter_on_discovered_with_result_on_parent_window(self, intent: Intent, result_data: dict, result: str):
         parent_window_presenter = self.__parent_window.get_top_presenter()
-        parent_window_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+        parent_window_presenter.on_view_discovered_with_result(intent.get_action(), result_data, result)
 
-    def __notify_below_presenter_on_discovered_with_result(self, intent: Intent, result_data: dict):
+    def __notify_below_presenter_on_discovered_with_result(self, intent: Intent, result_data: dict, result: str):
         below_presenter = self.get_top_presenter()
-        below_presenter.on_view_discovered_with_result(intent.get_action(), result_data)
+        below_presenter.on_view_discovered_with_result(intent.get_action(), result_data, result)
 
     def show(self):
         self.__stacked_widget.show()

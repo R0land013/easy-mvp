@@ -4,6 +4,8 @@ class Intent:
 
     NO_ACTION = 'no_action'
 
+    NO_RESULT = 'no_result'
+
     def __init__(self, presenter_class: type):
         self.__presenter_data = {}
         self.__presenter_action = self.NO_ACTION

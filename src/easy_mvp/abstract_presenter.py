@@ -27,10 +27,11 @@ class AbstractPresenter:
     def _close_this_presenter(self):
         self.__window_handler.pop_presenter(self)
 
-    def _close_this_presenter_with_result(self, result_data: dict):
+    def _close_this_presenter_with_result(self, result_data: dict, result: str = Intent.NO_RESULT):
         self.__window_handler.pop_presenter_with_result(self.__intent,
                                                         calling_presenter=self,
-                                                        result_data=result_data)
+                                                        result_data=result_data,
+                                                        result=result)
 
     def _on_initialize(self):
         pass
@@ -44,7 +45,7 @@ class AbstractPresenter:
     def on_view_discovered(self):
         pass
 
-    def on_view_discovered_with_result(self, action: str, result_data: dict):
+    def on_view_discovered_with_result(self, action: str, result_data: dict, result: str):
         pass
 
     def on_closing_presenter(self):

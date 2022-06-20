@@ -29,7 +29,7 @@ class SecondPresenter(AbstractPresenter):
         intent.set_data(data)
         self._open_other_presenter(intent)
 
-    def on_view_discovered_with_result(self, action: str, result_data: dict):
+    def on_view_discovered_with_result(self, action: str, result_data: dict, result: str):
         self.__name = result_data[ThirdPresenter.GREETING_NAME]
         message = 'Hello again {}!'.format(self.__name)
         self.get_view().set_message(message)
