@@ -103,13 +103,15 @@ method of AbstractPresenter.
 ### Receiving data from presenters
 
 A presenter can receive data from another presenter that it has created,
-if the second one is closed using the **_close_this_presenter_with_result(result_data: dict)**
+if the second one is closed using the **_close_this_presenter_with_result(result_data: dict, result: str = Intent.NO_RESULT)**
 method. In this way, the presenter that is below in the stack receives control of the
-program via **on_view_discovered_with_result(action: str, data: dict)** instead of
+program via **on_view_discovered_with_result(action: str, data: dict, result: str)** instead of
 **on_view_discovered**. The action parameter is the action that was passed to the **Intent** when
-it was ordered to open the new presenter. And result_data is a **Python dictionary** that the
+it was ordered to open the new presenter. The result_data is a **Python dictionary** that the
 presenter who was on top can pass through
-**_close_this_presenter_with_result(result_data: dict)**.
+**_close_this_presenter_with_result(result_data: dict, result: str = Intent.NO_RESULT)**. The result string can be used
+to tell the below presenter what happened on top presenter. In this way the below presenter can take different decisions
+depending on the result returned by top presenter.
 
 
 ### Managing global data
