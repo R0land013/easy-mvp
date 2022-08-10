@@ -33,3 +33,7 @@ class SecondPresenter(AbstractPresenter):
         self.__name = result_data[ThirdPresenter.GREETING_NAME]
         message = 'Hello again {}!'.format(self.__name)
         self.get_view().set_message(message)
+        self._set_window_title(message)
+
+    def get_default_window_title(self) -> str:
+        return 'Second view, Hello again {}'.format(self.__name)

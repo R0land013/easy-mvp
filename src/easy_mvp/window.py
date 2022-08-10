@@ -43,6 +43,7 @@ class WindowHandler:
         self.__notify_presenter_on_view_covered(calling_presenter)
 
         self.__add_presenter_and_its_view(intent)
+        self.update_window_title()
         self.__notify_top_presenter_on_view_shown()
 
     def presenter_count(self) -> int:
@@ -72,6 +73,10 @@ class WindowHandler:
         self.__stacked_widget.addWidget(new_presenter.get_view())
         self.__stacked_widget.setCurrentWidget(new_presenter.get_view())
 
+    def update_window_title(self):
+        top_presenter_title = self.get_top_presenter().get_default_window_title()
+        self.__stacked_widget.setWindowTitle(top_presenter_title)
+
     def __notify_top_presenter_on_view_shown(self):
         self.get_top_presenter().on_view_shown()
 
@@ -87,10 +92,12 @@ class WindowHandler:
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed and self.has_parent_window():
+            self.__parent_window.update_window_title()
             presenter_of_parent_window = self.__parent_window.get_top_presenter()
             presenter_of_parent_window.on_view_discovered()
         elif self.presenter_count() >= 1:
             below_presenter = self.get_top_presenter()
+            self.update_window_title()
             below_presenter.on_view_discovered()
         else:
             self.__app_manager.exit()
@@ -129,8 +136,10 @@ class WindowHandler:
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed:
+            self.__parent_window.update_window_title()
             self.__notify_presenter_on_discovered_with_result_on_parent_window(intent, result_data, result)
         else:
+            self.update_window_title()
             self.__notify_below_presenter_on_discovered_with_result(intent, result_data, result)
 
     def __check_there_is_below_presenter_to_be_notified_with_result(self):
@@ -164,3 +173,6 @@ class WindowHandler:
 
     def remove_child_window(self, child_window):
         self.__child_windows.remove(child_window)
+
+    def set_window_title(self, window_title: str):
+        self.__stacked_widget.setWindowTitle(window_title)

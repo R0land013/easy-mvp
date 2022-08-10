@@ -24,6 +24,7 @@ class FirstPresenter(AbstractPresenter):
         view = self.get_view()
         self.__name = view.get_name()
         view.set_message(self.__message.format(self.__name))
+        self._set_window_title(self.__message.format(self.__name))
 
     def close(self):
         self._close_this_presenter()
@@ -31,3 +32,7 @@ class FirstPresenter(AbstractPresenter):
     def on_view_discovered_with_result(self, action: str, result_data: dict, result: str):
         self.__name = result_data[SecondPresenter.GREETING_NAME]
         self.get_view().set_message(self.__message.format(self.__name))
+        self._set_window_title(self.__message.format(self.__name))
+
+    def get_default_window_title(self) -> str:
+        return 'First View'

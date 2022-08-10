@@ -68,3 +68,12 @@ class AbstractPresenter:
 
     def has_global_data(self, key: str) -> bool:
         return self.__app_manager.has_global_data(key)
+
+    def get_default_window_title(self) -> str:
+        # This method will be called before the presenter receives the
+        # on_view_show, on_view_discovered and on_view_discovered_with_result
+        # calls.
+        return 'No Title, reimplement get_default_window_title'
+
+    def _set_window_title(self, window_title: str):
+        self.__window_handler.set_window_title(window_title)
