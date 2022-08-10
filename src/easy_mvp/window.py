@@ -83,6 +83,7 @@ class WindowHandler:
 
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
+        top_presenter.get_view().deleteLater()
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed and self.has_parent_window():
@@ -124,6 +125,7 @@ class WindowHandler:
 
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
+        top_presenter.get_view().deleteLater()
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed:
