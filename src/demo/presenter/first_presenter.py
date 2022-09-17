@@ -36,3 +36,6 @@ class FirstPresenter(AbstractPresenter):
 
     def get_default_window_title(self) -> str:
         return 'First View'
+
+    def on_window_closing(self):
+        print('Cleaning FirstPresenter...')

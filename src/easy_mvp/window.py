@@ -14,6 +14,8 @@ class StackWindow(QStackedWidget):
 
     def closeEvent(self, event: QCloseEvent):
         self.__window_handler.close_all_child_windows()
+        self.__window_handler.close_window()
+        super().closeEvent(event)
 
 
 class WindowHandler:
@@ -121,10 +123,19 @@ class WindowHandler:
         return False
 
     def close_window(self):
+        self.notify_presenters_on_window_closing()
         self.__stacked_widget.close()
         self.__app_manager.remove_window(self)
         if self.__parent_window is not None:
             self.__parent_window.remove_child_window(self)
+
+    def notify_presenters_on_window_closing(self):
+        last_presenter_stack_index = self.presenter_count() - 1
+
+        # iterate over __presenter_stack reversely
+        for presenter_index in range(last_presenter_stack_index, -1, -1):
+            a_presenter: AbstractPresenter = self.__presenter_stack[presenter_index]
+            a_presenter.on_window_closing()
 
     def pop_presenter_with_result(self, intent: Intent, calling_presenter: AbstractPresenter, result_data: dict, result: str):
         self.__check_is_top_presenter(calling_presenter)

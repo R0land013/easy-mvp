@@ -31,3 +31,6 @@ class FourthPresenter(AbstractPresenter):
 
     def __is_name_changed(self) -> bool:
         return self._get_intent_data()[self.GREETING_NAME] != self.__name
+
+    def on_window_closing(self):
+        print('Cleaning FourthPresenter...')

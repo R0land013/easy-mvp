@@ -37,3 +37,6 @@ class SecondPresenter(AbstractPresenter):
 
     def get_default_window_title(self) -> str:
         return 'Second view, Hello again {}'.format(self.__name)
+
+    def on_window_closing(self):
+        print('Cleaning SecondPresenter...')

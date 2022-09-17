@@ -77,3 +77,6 @@ class AbstractPresenter:
 
     def _set_window_title(self, window_title: str):
         self.__window_handler.set_window_title(window_title)
+
+    def on_window_closing(self):
+        pass

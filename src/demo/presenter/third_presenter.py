@@ -35,3 +35,6 @@ class ThirdPresenter(AbstractPresenter):
         if result == FourthPresenter.NAME_CHANGED_RESULT:
             message += '\nThe name was changed on fourth screen.'
         self.get_view().set_message(message)
+
+    def on_window_closing(self):
+        print('Cleaning ThirdPresenter...')
