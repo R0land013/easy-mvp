@@ -65,7 +65,7 @@ or closed.
 ![flow_of_calls_on_presenter](https://github.com/R0land013/easy-mvp/blob/b2c8ba51e5315679848925967611e1e5931871dd/readme_img/flow_of_calls_on_presenter.png?raw=true)
 
 The **_on_initialize** method is the first method called in the **AbstractPresenter** class.
-Here the instance variables of the presenter must be initialized. Also you must
+Here the instance variables of the presenter must be initialized. Also, you must
 create the instance of the view that corresponds to the presenter. Once created,
 the view instance must be set with the **_set_view(view)** method, from
 this way the view is made accessible to the rest of the classes in **easy_mvp environment**.
@@ -92,10 +92,10 @@ When the presenter at the top of the stack calls **_close_this_presenter**
 receives the control with the **on_closing_presenter** method. In this method
 resources should be released and observers removed. After the call to
 **on_closing_presenter** the presenter and the view of the presenter will be
-removed and it will happen what it has been explained previously.
+removed, and it will happen what it has been explained previously.
 It should be noted that if the presenter who closes is the
 only one that exists in the entire application, that is, there is only one
-window and it owns only a presenter then the application will close with
+window, and it owns only a presenter then the application will close with
 the **status code 0**. To close the program with different code, use the **exit_app**
 method of AbstractPresenter.
 
@@ -135,3 +135,24 @@ the new presenter may behave differently depending on the action received.
 
 **Intent** also allows data to be passed to a new presenter via **set_data(data: dict)**.
 To see examples of how **Intent** is used, check out the ``demo.py`` program.
+
+
+## Customize window title
+
+Every presenter can change the window title. This is useful because each presenter will do
+a different task, and therefore you would like to change the title of the window depending
+on it.
+
+You can reimplement the method **get_default_window_title(self)** to set a custom
+window title. You only have to set **return 'My custom window title'** in the method's
+body. This method will be called before the presenter receives the
+***on_view_show***, ***on_view_discovered*** and ***on_view_discovered_with_result*** calls.
+By default, this method returns the *'No Title, reimplement get_default_window_title'* string.
+
+
+But if you want more power on changing the window title you can use the
+**_set_window_title(self, window_title: str)** to immediately change it. After calling
+this method the window title can be replaced automatically if the presenter who set it is popped,
+or if a new presenter is added on top. This will happen because of the calls to
+**get_default_window_title(self)** on below presenter or on the new presenter respectively,
+during the **easy-mvp** event flow.
