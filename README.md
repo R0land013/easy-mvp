@@ -137,6 +137,23 @@ the new presenter may behave differently depending on the action received.
 To see examples of how **Intent** is used, check out the ``demo.py`` program.
 
 
+## Acting when user closes window
+
+If the user clicks the close window button then all presenters in the
+presenter stack of the window will receive the **on_window_closing(self)**
+call. The first presenter to receive the call will be the one which is
+on the stack top, the next to receive the call will be the below presenter.
+This flow of calls will occur all the way down through the window stack.
+When all presenters have executed **on_window_closing(self)** then the
+window will be closed. If the window that is being closing has child
+windows, then all its children will receive the **on_window_closing(self)**
+calls in the same way the parent window received it.
+
+This method is useful to close database connections, close files and
+stop threads. All you must close goes here.
+
+
+
 ## Customize window title
 
 Every presenter can change the window title. This is useful because each presenter will do
