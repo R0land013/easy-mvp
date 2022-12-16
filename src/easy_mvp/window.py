@@ -13,8 +13,6 @@ class StackWindow(QStackedWidget):
         self.__window_handler = window_handler
 
     def closeEvent(self, event: QCloseEvent):
-        self.__window_handler.close_all_child_windows()
-        self.__window_handler.close_window()
         super().closeEvent(event)
 
 
@@ -123,9 +121,19 @@ class WindowHandler:
         return False
 
     def close_window(self):
+        self.__stacked_widget.close()
+
+    def remove_from_app_manager(self):
         self.notify_presenters_on_window_closing()
+        self.close_all_child_windows()
+        
+        self.remove_from_app_manager()
+        self.remove_from_parent_window_if_possible()
+        
         self.__stacked_widget.close()
         self.__app_manager.remove_window(self)
+    
+    def remove_from_parent_window_if_possible(self):
         if self.__parent_window is not None:
             self.__parent_window.remove_child_window(self)
 
