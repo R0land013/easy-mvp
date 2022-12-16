@@ -160,5 +160,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 /.idea
 
-# Este directorio es usado para crear reportes de ventas en formato html o pdf.
-/generated
+# Visual studio code generated folder
+/.vscode
