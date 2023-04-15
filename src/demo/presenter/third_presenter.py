@@ -38,3 +38,6 @@ class ThirdPresenter(AbstractPresenter):
 
     def on_window_closing(self):
         print('Cleaning ThirdPresenter...')
+
+    def on_view_discovered(self):
+        print('Hello from ThirdPresenter, the name was not changed on FourthPresenter')

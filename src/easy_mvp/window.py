@@ -11,9 +11,15 @@ class StackWindow(QStackedWidget):
     def __init__(self, window_handler):
         super().__init__()
         self.__window_handler = window_handler
+        self.__already_notified_on_closing: bool = False
 
     def closeEvent(self, event: QCloseEvent):
-        super().closeEvent(event)
+        if self.__already_notified_on_closing:
+            super().closeEvent(event)
+        else:
+            self.__already_notified_on_closing = True
+            self.__window_handler.close_handler_and_send_all_notifications()
+
 
 
 class WindowHandler:
@@ -195,3 +201,23 @@ class WindowHandler:
 
     def set_window_title(self, window_title: str):
         self.__stacked_widget.setWindowTitle(window_title)
+
+    def close_handler_and_send_all_notifications(self):
+        """
+        Notify all presenters of the child windows with on_window_closing,
+        later close the child windows.
+        Then do the same on the presenter of this window and close this window.
+        """
+        for child_window_handler in self.__child_windows:
+            child_window_handler.close_window()
+
+        self.__child_windows = []
+
+        self.notify_all_presenters_on_window_closing()
+        self.close_window()
+
+
+    def notify_all_presenters_on_window_closing(self):
+        base_stack_index = (len(self.__presenter_stack) + 1) * -1
+        for presenter_index in range(-1, base_stack_index, -1):
+            self.__presenter_stack[presenter_index].on_window_closing()
