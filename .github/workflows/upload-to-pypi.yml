@@ -5,11 +5,12 @@ on:
     tags:
       - v**
 jobs:
-  Build-AppImage:
+  Uploading-to-PyPi:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install python3.10-venv
       - run: python3 -m pip install --upgrade build
+      - run: python3 -m build
       - run: python3 -m pip install --upgrade twine
-      - run: echo "${TWINE_USERNAME}\n${TWINE_PASSWORD}" | python3 -m twine upload --repository testpypi dist/*
+      - run: echo "${{ secrets.TWINE_USERNAME }}\n${{ secrets.TWINE_TOKEN }}" | python3 -m twine upload --repository testpypi dist/*
