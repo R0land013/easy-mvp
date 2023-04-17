@@ -1,0 +1,41 @@
+name: Upload to PyPi
+run-name: Uploading to PyPi
+on:
+  push:
+    tags:
+      - v**
+jobs:
+  Uploading-to-PyPi:
+    permissions:
+      id-token: 'write'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo apt-get install python3.10-venv
+      - run: python3 -m pip install --upgrade build
+      - run: python3 -m build
+      - run: python3 -m pip install --upgrade twine
+      
+      
+      - name: Publish distribution 📦 to Test PyPI
+        if: always()
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+      
+      - name: Publish distribution 📦 to PyPI
+        if: always()
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+      
+      - name: Uploading wheel file to releases
+        if: always()
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "./dist/*.whl"
+          tags: true
+          draft: false
