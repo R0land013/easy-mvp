@@ -15,11 +15,11 @@ class FourthPresenter(AbstractPresenter):
         self.__name = self._get_intent_data()[self.GREETING_NAME]
 
     def on_view_shown(self):
-        self.get_view().set_message("Hello one more time, {}!".format(self.__name))
+        self.view.set_message("Hello one more time, {}!".format(self.__name))
 
     def change_name(self):
-        self.__name = self.get_view().get_name()
-        self.get_view().set_message("Hello one more time, {}!".format(self.__name))
+        self.__name = self.view.get_name()
+        self.view.set_message("Hello one more time, {}!".format(self.__name))
 
     def go_back(self):
         if self.__is_name_changed():

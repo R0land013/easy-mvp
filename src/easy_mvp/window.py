@@ -77,8 +77,8 @@ class WindowHandler:
         presenter_class = intent.get_presenter_class()
         new_presenter = presenter_class(intent, self, self.__app_manager)
         self.__presenter_stack.append(new_presenter)
-        self.__stacked_widget.addWidget(new_presenter.get_view())
-        self.__stacked_widget.setCurrentWidget(new_presenter.get_view())
+        self.__stacked_widget.addWidget(new_presenter.view)
+        self.__stacked_widget.setCurrentWidget(new_presenter.view)
 
     def update_window_title(self):
         top_presenter_title = self.get_top_presenter().get_default_window_title()
@@ -95,7 +95,7 @@ class WindowHandler:
 
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
-        top_presenter.get_view().deleteLater()
+        top_presenter.view.deleteLater()
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed and self.has_parent_window():
@@ -113,7 +113,7 @@ class WindowHandler:
 
     def __pop_presenter_and_its_view(self) -> AbstractPresenter:
         top_presenter = self.__presenter_stack.pop(-1)
-        self.__stacked_widget.removeWidget(top_presenter.get_view())
+        self.__stacked_widget.removeWidget(top_presenter.view)
         return top_presenter
 
     def __notify_presenter_on_view_discovered(self):
@@ -158,7 +158,7 @@ class WindowHandler:
 
         top_presenter = self.__pop_presenter_and_its_view()
         top_presenter.on_closing_presenter()
-        top_presenter.get_view().deleteLater()
+        top_presenter.view.deleteLater()
 
         was_window_closed = self.__close_window_if_no_presenter_remains()
         if was_window_closed:

@@ -10,6 +10,10 @@ class AbstractPresenter:
         self.__view = None
         self._on_initialize()
 
+    @property
+    def view(self):
+        return self.__view
+
     def get_view(self):
         return self.__view
 

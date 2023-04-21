@@ -16,7 +16,7 @@ class ThirdPresenter(AbstractPresenter):
 
     def on_view_shown(self):
         message = 'Hello from new window, {}!'.format(self.__name)
-        self.get_view().set_message(message)
+        self.view.set_message(message)
 
     def open_fourth_presenter(self):
         intent = Intent(FourthPresenter)
@@ -34,7 +34,7 @@ class ThirdPresenter(AbstractPresenter):
 
         if result == FourthPresenter.NAME_CHANGED_RESULT:
             message += '\nThe name was changed on fourth screen.'
-        self.get_view().set_message(message)
+        self.view.set_message(message)
 
     def on_window_closing(self):
         print('Cleaning ThirdPresenter...')

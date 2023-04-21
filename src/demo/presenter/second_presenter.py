@@ -32,7 +32,7 @@ class SecondPresenter(AbstractPresenter):
     def on_view_discovered_with_result(self, action: str, result_data: dict, result: str):
         self.__name = result_data[ThirdPresenter.GREETING_NAME]
         message = 'Hello again {}!'.format(self.__name)
-        self.get_view().set_message(message)
+        self.view.set_message(message)
         self._set_window_title(message)
 
     def get_default_window_title(self) -> str:
