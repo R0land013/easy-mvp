@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QCloseEvent
+from PyQt5.QtGui import QCloseEvent, QIcon
 from PyQt5.QtWidgets import QStackedWidget
 from PyQt5.QtCore import Qt
 from easy_mvp.abstract_presenter import AbstractPresenter
@@ -24,13 +24,14 @@ class StackWindow(QStackedWidget):
 
 class WindowHandler:
 
-    def __init__(self, application_manager, parent_window=None):
+    def __init__(self, application_manager, parent_window=None, window_icon_path: str = None):
         self.__presenter_stack = []
         self.__parent_window = None
         self.__link_to_parent_window(parent_window)
         self.__stacked_widget = StackWindow(self)
         self.__app_manager = application_manager
         self.__child_windows = []
+        self.__window_icon_path = window_icon_path
 
     def __link_to_parent_window(self, parent_window):
         if parent_window is not None:
@@ -183,6 +184,8 @@ class WindowHandler:
         below_presenter.on_view_discovered_with_result(intent.get_action(), result_data, result)
 
     def show(self):
+        if self.__window_icon_path:
+            self.__stacked_widget.setWindowIcon(QIcon(self.__window_icon_path))
         self.__stacked_widget.show()
 
     def exit_app(self, code: int = 0):

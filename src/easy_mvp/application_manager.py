@@ -3,14 +3,17 @@ from easy_mvp.abstract_presenter import AbstractPresenter
 from easy_mvp.exception import NoGlobalDataWithKeyException
 from easy_mvp.intent import Intent
 from easy_mvp.window import WindowHandler
-
+import sys
 
 class ApplicationManager:
 
-    def __init__(self):
+    def __init__(self, app_name: str = 'No Name', window_icon_path: str = None):
         self.__window_stack = []
-        self.__app = QApplication([])
+        self.__app = QApplication(sys.argv)
         self.__global_data = {}
+        self.__window_icon_path = window_icon_path
+
+        self.__app.setApplicationName(app_name)
 
     def add_new_window(self, intent: Intent, parent_window: WindowHandler, calling_presenter: AbstractPresenter):
         window = WindowHandler(self, parent_window)
@@ -22,7 +25,7 @@ class ApplicationManager:
         self.__window_stack.remove(window)
 
     def execute_app(self, initial_intent: Intent):
-        window = WindowHandler(self)
+        window = WindowHandler(self, window_icon_path=self.__window_icon_path)
         window.add_presenter(initial_intent)
 
         self.__window_stack.append(window)
