@@ -26,7 +26,6 @@ Then you can run this command to install this package:
 pip install easy_mvp
 ````
 
-
 ## Explaining the mechanism
 
 The following explanations are reflected in ``demo.py`` program.
@@ -59,7 +58,6 @@ close the current presenter and to handle certain flows within the
 application, such as when a presenter is going to be initialized, hidden,
 or closed.
 
-
 ### The flow of events in a class that inherits from AbstractPresenter is like this:
 
 ![flow_of_calls_on_presenter](https://github.com/R0land013/easy-mvp/blob/b2c8ba51e5315679848925967611e1e5931871dd/readme_img/flow_of_calls_on_presenter.png?raw=true)
@@ -69,7 +67,7 @@ Here the instance variables of the presenter must be initialized. Also, you must
 create the instance of the view that corresponds to the presenter. Once created,
 the view instance must be set with the **_set_view(view)** method, from
 this way the view is made accessible to the rest of the classes in **easy_mvp environment**.
-The view can be obtained with the **get_view** method of **AbstractPresenter**, if it was set
+The view can be obtained with the **view** property or **get_view** method of **AbstractPresenter**, if it was set
 by **_set_view(view)** first.
 
 The **on_view_shown** method is called just after the presenter view
@@ -99,7 +97,6 @@ window, and it owns only a presenter then the application will close with
 the **status code 0**. To close the program with different code, use the **exit_app**
 method of AbstractPresenter.
 
-
 ### Receiving data from presenters
 
 A presenter can receive data from another presenter that it has created,
@@ -113,14 +110,12 @@ presenter who was on top can pass through
 to tell the below presenter what happened on top presenter. In this way the below presenter can take different decisions
 depending on the result returned by top presenter.
 
-
 ### Managing global data
 
 Data can be created to be accessible throughout the entire application. This is
 accomplished with the **set_global_data(key: str, data)** and **get_global_data(key: str)**
 methods of **AbstractPresenter**. You can also check if a global data exists with the method
 **has_global_data(key: str)**, which returns True if it exists and False otherwise.
-
 
 ## Knowing Intent in depth
 
@@ -135,7 +130,6 @@ the new presenter may behave differently depending on the action received.
 
 **Intent** also allows data to be passed to a new presenter via **set_data(data: dict)**.
 To see examples of how **Intent** is used, check out the ``demo.py`` program.
-
 
 ## Acting when user closes window
 
@@ -152,8 +146,6 @@ calls in the same way the parent window received it.
 This method is useful to close database connections, close files and
 stop threads. All you must close goes here.
 
-
-
 ## Customize window title
 
 Every presenter can change the window title. This is useful because each presenter will do
@@ -166,10 +158,23 @@ body. This method will be called before the presenter receives the
 ***on_view_show***, ***on_view_discovered*** and ***on_view_discovered_with_result*** calls.
 By default, this method returns the *'No Title, reimplement get_default_window_title'* string.
 
-
 But if you want more power on changing the window title you can use the
 **_set_window_title(self, window_title: str)** to immediately change it. After calling
 this method the window title can be replaced automatically if the presenter who set it is popped,
 or if a new presenter is added on top. This will happen because of the calls to
 **get_default_window_title(self)** on below presenter or on the new presenter respectively,
 during the **easy-mvp** event flow.
+
+## Setting application name and window Icon
+
+You can set the application name and Window Icon by passing this information to
+ApplicationManager constructor:
+
+````python
+manager = ApplicationManager(
+    app_name='easy_mvp demo',
+    window_icon_path='./demo/view/ui/assets/icon.png'
+)
+````
+
+This way the operating system will know the name of your app and its window icon.
